@@ -32,7 +32,9 @@ public class Cuenta {
 
     validarCantidadDepositosDiarios();
 
-    new Movimiento(LocalDate.now(), monto, true).agregateA(this);
+    saldo += monto;
+    Movimiento nuevoDeposito = new Movimiento(LocalDate.now(), monto, true);
+    movimientos.add(nuevoDeposito);
   }
 
   public void realizarExtraccion(double monto) {
@@ -42,7 +44,9 @@ public class Cuenta {
 
     validarLimiteExtraccionDiario(monto);
 
-    new Movimiento(LocalDate.now(), monto, false).agregateA(this);
+    saldo -= monto;
+    Movimiento nuevaExtraccion = new Movimiento(LocalDate.now(), monto, false);
+    movimientos.add(nuevaExtraccion);
   }
 
   ///////////VALIDACIONES
