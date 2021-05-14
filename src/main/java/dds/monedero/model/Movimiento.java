@@ -19,10 +19,6 @@ public class Movimiento {
     return fecha;
   }
 
-  public boolean fueRealizado(LocalDate fecha) {
-    return esDeLaFecha(fecha);
-  }
-
   public boolean esDeLaFecha(LocalDate fecha) {
     return this.fecha.equals(fecha);
   }
