@@ -1,5 +1,13 @@
 ## Monedero
 
+### Resolución
+Acá dejo el doc con las comentarios/explicaciones que fui haciendo a medida que realizaba algún cambio.
+También explico por qué tomé algunas decisiones.
+
+https://docs.google.com/document/d/1WFUSFNlQOMguybXpdM4bIS-ACy2SgcgULwpbg2sqbbo/edit?usp=sharing
+
+PD: Por las dudas deje un .pdf en la ruta raiz.
+
 ### Contexto
 
 Este repositorio contiene el código de un _monedero virtual_, al que podemos agregarle y quitarle dinero, a través 

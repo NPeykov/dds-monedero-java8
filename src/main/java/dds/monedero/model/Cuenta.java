@@ -1,6 +1,5 @@
 package dds.monedero.model;
 
-import dds.monedero.model.Validaciones.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,56 +10,32 @@ public class Cuenta {
 
   private double saldo;
   private List<Movimiento> movimientos = new ArrayList<>();
-  private List<Validacion> validacionesDeposito = new ArrayList<>();
-  private List<Validacion> validacionesExtraccion = new ArrayList<>();
 
   public Cuenta() {
     saldo = 0;
-    asignarValidacionesBaseDeposito();
-    asignarValidacionesBaseExtraccion();
   }
 
   public Cuenta(double montoInicial) {
     saldo = montoInicial;
-    asignarValidacionesBaseDeposito();
-    asignarValidacionesBaseExtraccion();
-  }
-
-  public void setMovimientos(List<Movimiento> movimientos) {
-    this.movimientos = movimientos;
   }
 
   public void realizarDeposito(double monto) {
-    evaluarValidaciones(validacionesDeposito, monto);
-
-    saldo += monto;
-    movimientos.add(new Deposito(LocalDate.now(), monto));
+    new Deposito().evaluarConcrecion(this, monto);
   }
 
   public void realizarExtraccion(double monto) {
-    evaluarValidaciones(validacionesExtraccion, monto);
-
-    saldo -= monto;
-    movimientos.add(new Extraccion(LocalDate.now(), monto));
+    new Extraccion().evaluarConcrecion(this, monto);
   }
-
-  ///////////VALIDACIONES
   
-  public void asignarValidacionesBaseDeposito(){
-    validacionesDeposito.add(new MontoPositivoValidacion());
-    validacionesDeposito.add(new CantidadDepositosDiariosValidacion());
-  }
-  public void asignarValidacionesBaseExtraccion(){
-    validacionesExtraccion.add(new MontoPositivoValidacion());
-    validacionesExtraccion.add(new SaldoSuficienteValidacion());
-    validacionesExtraccion.add(new LimiteExtraccionDiarioValidacion(1000));
+  public void concretarExtraccion(Movimiento nuevaExtraccion, double monto){
+    saldo -= monto;
+    movimientos.add(nuevaExtraccion);
   }
 
-  public void evaluarValidaciones(List<Validacion> validaciones, double monto){
-    validaciones.forEach(v -> v.validar(this, monto));
+  public void concretarDeposito(Movimiento nuevoDeposito, double monto){
+    saldo += monto;
+    movimientos.add(nuevoDeposito);
   }
-
-  //////////////////////////////////////
 
   public List<Movimiento> depositosRealizadosEn(LocalDate fecha){
     return getDepositos().stream()
