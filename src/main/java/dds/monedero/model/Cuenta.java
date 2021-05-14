@@ -32,9 +32,7 @@ public class Cuenta {
 
     validarCantidadDepositosDiarios();
 
-    saldo += monto;
-    Movimiento nuevoDeposito = new Movimiento(LocalDate.now(), monto, true);
-    movimientos.add(nuevoDeposito);
+    concretarOperacion(LocalDate.now(), -monto, true);
   }
 
   public void realizarExtraccion(double monto) {
@@ -44,9 +42,7 @@ public class Cuenta {
 
     validarLimiteExtraccionDiario(monto);
 
-    saldo -= monto;
-    Movimiento nuevaExtraccion = new Movimiento(LocalDate.now(), monto, false);
-    movimientos.add(nuevaExtraccion);
+    concretarOperacion(LocalDate.now(), -monto, false);
   }
 
   ///////////VALIDACIONES
@@ -86,7 +82,8 @@ public class Cuenta {
 
   //////////////////////////////////////
 
-  public void agregarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
+  public void concretarOperacion(LocalDate fecha, double cuanto, boolean esDeposito) {
+    saldo += cuanto;
     Movimiento movimiento = new Movimiento(fecha, cuanto, esDeposito);
     movimientos.add(movimiento);
   }
