@@ -11,13 +11,10 @@ public abstract class Movimiento {
   private double monto;
   public List<Validacion> validaciones;
 
-  public Movimiento(){
-    this.validaciones = new ArrayList<>();
-  }
-
   public Movimiento(LocalDate fecha, double monto) {
     this.fecha = fecha;
     this.monto = monto;
+    this.validaciones = new ArrayList<>();
   }
 
   public abstract void asignarValidacionesBase();

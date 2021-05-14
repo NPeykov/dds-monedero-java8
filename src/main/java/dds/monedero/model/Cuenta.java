@@ -20,21 +20,25 @@ public class Cuenta {
   }
 
   public void realizarDeposito(double monto) {
-    new Deposito().evaluarConcrecion(this, monto);
+    Deposito nuevoDeposito = new Deposito(LocalDate.now(), monto);
+    nuevoDeposito.evaluarValidaciones(this, monto);
+    concretarDeposito(nuevoDeposito, monto);
   }
 
   public void realizarExtraccion(double monto) {
-    new Extraccion().evaluarConcrecion(this, monto);
+    Extraccion nuevaExtraccion = new Extraccion(LocalDate.now(), monto);
+    nuevaExtraccion.evaluarValidaciones(this, monto);
+    concretarExtraccion(nuevaExtraccion, monto);
   }
   
-  public void concretarExtraccion(Movimiento nuevaExtraccion, double monto){
-    saldo -= monto;
-    movimientos.add(nuevaExtraccion);
+  public void concretarDeposito(Movimiento deposito, double monto){
+    saldo += monto;
+    movimientos.add(deposito);
   }
 
-  public void concretarDeposito(Movimiento nuevoDeposito, double monto){
-    saldo += monto;
-    movimientos.add(nuevoDeposito);
+  public void concretarExtraccion(Movimiento extraccion, double monto){
+    saldo -= monto;
+    movimientos.add(extraccion);
   }
 
   public List<Movimiento> depositosRealizadosEn(LocalDate fecha){
