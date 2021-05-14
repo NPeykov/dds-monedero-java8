@@ -4,6 +4,7 @@ import dds.monedero.exceptions.MaximaCantidadDepositosException;
 import dds.monedero.exceptions.MaximoExtraccionDiarioException;
 import dds.monedero.exceptions.MontoNegativoException;
 import dds.monedero.exceptions.SaldoMenorException;
+import dds.monedero.model.Validaciones.Validacion;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class Cuenta {
 
   private double saldo;
   private List<Movimiento> movimientos = new ArrayList<>();
+  private List<Validacion> validacionesDeposito = new ArrayList<>();
+  private List<Validacion> validacionesExtraccion = new ArrayList<>();
 
   public Cuenta() {
     saldo = 0;
@@ -46,25 +49,25 @@ public class Cuenta {
   }
 
   ///////////VALIDACIONES
-
+/*
   public void validarMontoPositivo(double monto){
     if (monto <= 0) {
       throw new MontoNegativoException(monto + ": el monto a ingresar debe ser un valor positivo");
     }
-  }
-
+  }*/
+/*
   public void validarCantidadDepositosDiarios(){
     if (depositosRealizadosEn(LocalDate.now()).size() >= 3) {
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
-  }
-
+  }*/
+/*
   public void validarSaldoSuficiente(double monto){
     if (saldo - monto < 0) {
       throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
     }
-  }
-
+  }*/
+/*
   public void validarLimiteExtraccionDiario(double monto){
     double montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
     double limite = 1000 - montoExtraidoHoy;
@@ -72,7 +75,7 @@ public class Cuenta {
       throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
           + " diarios, límite: " + limite);
     }
-  }
+  }*/
 
   //////////////////////////////////////
 
