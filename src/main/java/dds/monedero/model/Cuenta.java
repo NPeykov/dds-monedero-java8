@@ -1,9 +1,5 @@
 package dds.monedero.model;
 
-import dds.monedero.exceptions.MaximaCantidadDepositosException;
-import dds.monedero.exceptions.MaximoExtraccionDiarioException;
-import dds.monedero.exceptions.MontoNegativoException;
-import dds.monedero.exceptions.SaldoMenorException;
 import dds.monedero.model.Validaciones.*;
 
 import java.time.LocalDate;
@@ -37,17 +33,19 @@ public class Cuenta {
   public void realizarDeposito(double monto) {
     evaluarValidaciones(validacionesDeposito, monto);
 
-    concretarDeposito(monto);
+    saldo += monto;
+    movimientos.add(new Deposito(LocalDate.now(), monto));
   }
 
   public void realizarExtraccion(double monto) {
     evaluarValidaciones(validacionesExtraccion, monto);
 
-    concretarExtraccion(monto);
+    saldo -= monto;
+    movimientos.add(new Extraccion(LocalDate.now(), monto));
   }
 
   ///////////VALIDACIONES
-
+  
   public void asignarValidacionesBaseDeposito(){
     validacionesDeposito.add(new MontoPositivoValidacion());
     validacionesDeposito.add(new CantidadDepositosDiariosValidacion());
@@ -75,18 +73,6 @@ public class Cuenta {
         .filter(movimiento -> movimiento.esDeLaFecha(fecha))
         .mapToDouble(Movimiento::getMonto)
         .sum();
-  }
-
-  public void concretarDeposito(double monto){
-    saldo += monto;
-    Deposito nuevoDeposito = new Deposito(LocalDate.now(), monto);
-    movimientos.add(nuevoDeposito);
-  }
-
-  public void concretarExtraccion(double monto){
-    saldo -= monto;
-    Extraccion nuevaExtraccion = new Extraccion(LocalDate.now(), monto);
-    movimientos.add(nuevaExtraccion);
   }
 
   public List<Movimiento> getDepositos(){
