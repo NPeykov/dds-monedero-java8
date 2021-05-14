@@ -19,11 +19,7 @@ public class Movimiento {
     return fecha;
   }
 
-  public boolean fueDepositado(LocalDate fecha) {
-    return esDeLaFecha(fecha);
-  }
-
-  public boolean fueExtraido(LocalDate fecha) {
+  public boolean fueRealizado(LocalDate fecha) {
     return esDeLaFecha(fecha);
   }
 

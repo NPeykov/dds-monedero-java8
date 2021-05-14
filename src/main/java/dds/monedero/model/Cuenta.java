@@ -32,7 +32,7 @@ public class Cuenta {
 
     validarCantidadDepositosDiarios();
 
-    concretarOperacion(LocalDate.now(), -monto, true);
+    concretarDeposito(monto);
   }
 
   public void realizarExtraccion(double monto) {
@@ -42,7 +42,7 @@ public class Cuenta {
 
     validarLimiteExtraccionDiario(monto);
 
-    concretarOperacion(LocalDate.now(), -monto, false);
+    concretarExtraccion(monto);
   }
 
   ///////////VALIDACIONES
@@ -57,12 +57,6 @@ public class Cuenta {
     if (depositosRealizadosEn(LocalDate.now()).size() >= 3) {
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
-  }
-
-  public List<Movimiento> depositosRealizadosEn(LocalDate fecha){
-    return movimientos.stream()
-        .filter(m -> m.esDeLaFecha(fecha) && m.isDeposito())
-        .collect(Collectors.toList());
   }
 
   public void validarSaldoSuficiente(double monto){
@@ -82,17 +76,37 @@ public class Cuenta {
 
   //////////////////////////////////////
 
-  public void concretarOperacion(LocalDate fecha, double cuanto, boolean esDeposito) {
-    saldo += cuanto;
-    Movimiento movimiento = new Movimiento(fecha, cuanto, esDeposito);
-    movimientos.add(movimiento);
+  public List<Movimiento> depositosRealizadosEn(LocalDate fecha){
+    return getDepositos().stream()
+        .filter(m -> m.esDeLaFecha(fecha))
+        .collect(Collectors.toList());
   }
 
   public double getMontoExtraidoA(LocalDate fecha) {
-    return getMovimientos().stream()
-        .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))
+    return getExtracciones().stream()
+        .filter(movimiento -> movimiento.getFecha().equals(fecha))
         .mapToDouble(Movimiento::getMonto)
         .sum();
+  }
+
+  public void concretarDeposito(double monto){
+    saldo += monto;
+    Deposito nuevoDeposito = new Deposito(LocalDate.now(), monto);
+    movimientos.add(nuevoDeposito);
+  }
+
+  public void concretarExtraccion(double monto){
+    saldo -= monto;
+    Extraccion nuevaExtraccion = new Extraccion(LocalDate.now(), monto);
+    movimientos.add(nuevaExtraccion);
+  }
+
+  public List<Movimiento> getDepositos(){
+    return movimientos.stream().filter(m -> m instanceof Deposito).collect(Collectors.toList());
+  }
+
+  public List<Movimiento> getExtracciones(){
+    return movimientos.stream().filter(m -> m instanceof Extraccion).collect(Collectors.toList());
   }
 
   public List<Movimiento> getMovimientos() {
